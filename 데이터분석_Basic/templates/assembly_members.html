@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>제헌국회 의원 명부 · BLEAX</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#CFC7B6;
+  --card:#EDE7DA;
+  --card-2:#DDD4C2;
+  --ink:#1F1B16;
+  --ink-2:#4E463A;
+  --muted:#877D6C;
+  --line:#B9AF9C;
+  --line-2:#C8BFAD;
+  --seal:#A8332A;
+  --cols:1.5fr .9fr 1.2fr 68px 190px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:'IBM Plex Sans KR',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:clamp(16px,3.5vw,48px);
+}
+.wrap{max-width:1120px;margin:0 auto}
+
+/* ── 표제 ────────────────────────────── */
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
+}
+h1{
+  font-family:'Nanum Myeongjo',serif;font-weight:800;
+  font-size:clamp(2rem,5.6vw,3.4rem);line-height:1.14;
+  letter-spacing:-.02em;margin:.24em 0 .34em;
+}
+h1 .red{color:var(--seal)}
+.lede{max-width:48ch;color:var(--ink-2);font-size:.94rem;line-height:1.7;word-break:keep-all}
+
+/* ── 요약 ────────────────────────────── */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  margin:30px 0 14px;border-radius:4px;overflow:hidden;
+}
+.stat{background:var(--card);padding:14px 16px}
+.stat dt{
+  font-family:'IBM Plex Mono',monospace;font-size:.64rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;
+}
+.stat dd{
+  font-family:'Nanum Myeongjo',serif;font-weight:700;
+  font-size:clamp(1.15rem,3vw,1.55rem);font-variant-numeric:tabular-nums;
+}
+.stat dd small{font-family:'IBM Plex Sans KR',sans-serif;font-size:.58em;font-weight:400;color:var(--muted);margin-left:3px}
+
+/* ── 시그니처 1: 대수 잔존 차트 ──────── */
+.survival{padding:22px 24px 18px;background:var(--card);border:1px solid var(--line);border-radius:4px}
+.survival h2{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;
+}
+.cols{display:flex;align-items:flex-end;gap:5px;height:132px}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0}
+.col .n{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;
+  text-align:center;color:var(--ink-2);margin-bottom:5px;font-variant-numeric:tabular-nums;
+}
+.col .n.zero{color:var(--muted);opacity:.4}
+.col .bar{
+  height:var(--h);min-height:1px;background:var(--ink-2);border-radius:2px 2px 0 0;
+  transform-origin:bottom;
+  animation:grow .6s cubic-bezier(.2,.8,.3,1) backwards;
+  animation-delay:calc(var(--i) * 55ms);
+}
+.col.first .bar{background:var(--seal)}
+@keyframes grow{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
+.axis{display:flex;gap:5px;margin-top:8px;border-top:1px solid var(--line);padding-top:7px}
+.axis span{
+  flex:1;text-align:center;min-width:0;
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--muted);
+}
+.axis span.first{color:var(--seal);font-weight:600}
+.survival p.note{margin-top:14px;font-size:.85rem;color:var(--ink-2);line-height:1.65;word-break:keep-all}
+.survival p.note b{font-weight:600;color:var(--ink)}
+
+/* ── 툴바 ────────────────────────────── */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:26px 0 10px}
+.search{
+  flex:1 1 220px;display:flex;align-items:center;gap:9px;
+  background:var(--card);border:1px solid var(--line);border-radius:4px;padding:10px 13px;
+}
+.search:focus-within{border-color:var(--ink)}
+.search svg{flex:none;stroke:var(--muted)}
+.search input{border:0;outline:0;width:100%;font:inherit;font-size:.92rem;background:none;color:var(--ink)}
+.search input::placeholder{color:var(--muted)}
+select{
+  font:inherit;font-size:.86rem;padding:10px 13px;border-radius:4px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink-2);cursor:pointer;
+}
+.tally{font-family:'IBM Plex Mono',monospace;font-size:.74rem;letter-spacing:.08em;color:var(--muted);margin-left:auto}
+.tally b{color:var(--ink)}
+
+.parties{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{
+  display:flex;align-items:center;gap:7px;font-size:.79rem;padding:6px 11px;
+  border-radius:4px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);cursor:pointer;
+}
+.chip i{width:8px;height:8px;border-radius:2px;background:var(--party,var(--muted));flex:none}
+.chip b{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--ink)}
+.chip:hover{border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--card)}
+.chip[aria-pressed="true"] b{color:var(--card)}
+.chip:focus-visible,.search input:focus-visible,select:focus-visible{outline:2px solid var(--seal);outline-offset:2px}
+
+/* ── 시그니처 2: 눈금이 세로로 쌓여 행렬이 된다 ── */
+.roster{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+
+.head,.row{display:grid;grid-template-columns:var(--cols);align-items:center;gap:14px;padding:0 18px}
+
+.head{
+  position:sticky;top:0;z-index:2;height:38px;background:var(--card-2);
+  border-bottom:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace;font-size:.64rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+}
+.head .c-rank{text-align:right}
+
+.row{
+  min-height:46px;border-bottom:1px solid var(--line-2);
+  animation:rise .4s ease backwards;
+  animation-delay:calc(min(var(--i),26) * 22ms + 200ms);
+}
+@keyframes rise{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.row:last-of-type{border-bottom:0}
+.row:hover{background:#F4EFE4}
+.row[hidden]{display:none}
+
+.c-name{display:flex;align-items:baseline;gap:9px;min-width:0}
+.c-name strong{font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:1.02rem;white-space:nowrap}
+.c-name span{font-family:'Nanum Myeongjo',serif;font-size:.82rem;color:var(--muted);white-space:nowrap}
+
+.c-party{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--ink-2);min-width:0}
+.c-party i{width:8px;height:8px;border-radius:2px;background:var(--party);flex:none}
+.c-party em{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.c-orig{font-size:.85rem;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.c-rank{
+  text-align:right;font-family:'IBM Plex Mono',monospace;
+  font-size:.78rem;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums;
+}
+
+.ticks{display:flex;gap:2px}
+.ticks i{flex:1;height:15px;border-radius:1px;background:var(--card-2)}
+.ticks i.on{background:var(--party)}
+.ticks i.on.first{background:var(--seal)}
+
+.empty{padding:52px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-size:1.02rem;margin-bottom:6px}
+
+footer{
+  margin-top:26px;padding-top:15px;border-top:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.08em;color:var(--muted);
+}
+
+/* ── 좁은 화면: 행을 카드로 ─────────── */
+@media (max-width:820px){
+  :root{--cols:1fr}
+  .head{display:none}
+  .row{
+    display:block;padding:14px 16px;position:relative;
+    border-left:3px solid var(--party);
+  }
+  .c-name{margin-bottom:6px}
+  .c-party,.c-orig{display:inline-flex;margin-right:14px;font-size:.82rem}
+  .c-orig{color:var(--muted)}
+  .c-rank{
+    position:absolute;top:14px;right:16px;text-align:right;
+  }
+  .ticks{margin-top:11px}
+}
+@media (max-width:560px){
+  .stats{grid-template-columns:1fr 1fr}
+  .cols{height:96px}
+  .col .n{font-size:.56rem}
+  .axis span{font-size:.55rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+{#- 잘려 보이던 컬럼명 대비: 값이 있는 첫 컬럼을 고른다 -#}
+{%- macro pick(row, keys) -%}
+  {%- set ns = namespace(v='') -%}
+  {%- for k in keys -%}{%- if not ns.v and row.get(k) -%}{%- set ns.v = row.get(k) -%}{%- endif -%}{%- endfor -%}
+  {{- ns.v -}}
+{%- endmacro -%}
+
+{% set ELE   = ['ele_gbn_nm','ele_gb_nm','ele_nm'] %}
+{% set REELE = ['reele_gbn_nm','reele_gb_nm','reele_nm'] %}
+
+{#- units 문자열 → 대수 숫자. '제헌'은 1대 -#}
+{% set units_of = {} %}
+{% set unit_counts = {} %}
+{% set agg = namespace(max=1, multi=0) %}
+{% for d in data %}
+  {% set got = [] %}
+  {% for u in (d.get('units') or '').split(',') %}
+    {% set t = u|trim|replace('제','')|replace('대','') %}
+    {% if t %}
+      {% set v = 1 if t == '헌' else t|int %}
+      {% if v > 0 %}
+        {% set _ = got.append(v) %}
+        {% if unit_counts.update({v: unit_counts.get(v, 0) + 1}) %}{% endif %}
+        {% if v > agg.max %}{% set agg.max = v %}{% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if got|length > 1 %}{% set agg.multi = agg.multi + 1 %}{% endif %}
+  {% if units_of.update({loop.index0: got}) %}{% endif %}
+{% endfor %}
+{% set peak = (unit_counts.values()|list|max) if unit_counts else 1 %}
+
+{#- 정당 집계. 1948년 정당엔 공식 색이 없으므로 규모순 먹색 계열을 배정 -#}
+{% set counts = {} %}
+{% for d in data %}
+  {% set p = (d.get('poly_nm') or '')|trim or '무소속' %}
+  {% if counts.update({p: counts.get(p, 0) + 1}) %}{% endif %}
+{% endfor %}
+{% set palette = ['#3E5C76','#7A5C3F','#5B7553','#6B5B7B','#8C4A3C','#46686A','#8A6B2F','#6E4750','#4C4A66','#5D6B4A'] %}
+{% set pcolor = {} %}
+{% for p, n in counts|dictsort(by='value', reverse=true) %}
+  {% if pcolor.update({p: '#877D6C' if p == '무소속' else palette[loop.index0 % palette|length]}) %}{% endif %}
+{% endfor %}
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">BLEAX · assembly_member · 100행</p>
+    <h1>제헌국회 {{ data|length }}명 중<br><span class="red">{{ agg.multi }}명</span>만<br>다음 국회로 갔습니다</h1>
+    <p class="lede">이 명부는 1948년 제헌국회에서 함께 출발한 사람들입니다. 명단이 100명쯤 쌓이면 개인의 이력보다 전체의 모양이 먼저 보입니다 — 오른쪽 눈금을 세로로 훑으면 어느 대에서 명단이 끊기는지가 그대로 드러납니다.</p>
+
+    <dl class="stats">
+      <div class="stat"><dt>명부 인원</dt><dd>{{ data|length }}<small>명</small></dd></div>
+      <div class="stat"><dt>정당·단체</dt><dd>{{ counts|length }}<small>개</small></dd></div>
+      <div class="stat"><dt>무소속</dt><dd>{{ counts.get('무소속', 0) }}<small>명</small></dd></div>
+      <div class="stat"><dt>재선 이상</dt><dd>{{ agg.multi }}<small>명</small></dd></div>
+    </dl>
+
+    <section class="survival">
+      <h2>대수별 재직 인원</h2>
+
+      <div class="cols">
+        {% for u in range(1, agg.max + 1) %}
+          {% set n = unit_counts.get(u, 0) %}
+          <div class="col {% if u == 1 %}first{% endif %}" title="{{ '제헌' if u == 1 else '제' ~ u ~ '대' }} · {{ n }}명">
+            <span class="n {% if n == 0 %}zero{% endif %}">{{ n }}</span>
+            <span class="bar" style="--h:{{ (n / peak * 100)|round(1) }}%;--i:{{ loop.index0 }}"></span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="axis">
+        {% for u in range(1, agg.max + 1) %}
+          <span class="{% if u == 1 %}first{% endif %}">{{ '헌' if u == 1 else u }}</span>
+        {% endfor %}
+      </div>
+
+      <p class="note">
+        제헌 <b>{{ unit_counts.get(1, 0) }}명</b>에서 제2대 <b>{{ unit_counts.get(2, 0) }}명</b>으로,
+        한 대 만에 {{ ((1 - unit_counts.get(2, 0) / (unit_counts.get(1, 1))) * 100)|round|int }}%가 명단에서 사라집니다.
+        가장 오래 남은 사람은 제{{ agg.max }}대까지 갔습니다.
+      </p>
+    </section>
+
+    <div class="toolbar">
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" type="search" placeholder="이름, 한자, 선거구로 찾기" autocomplete="off">
+      </label>
+      <select id="sort" aria-label="정렬 기준">
+        <option value="name">가나다순</option>
+        <option value="terms">오래 남은 순</option>
+        <option value="party">정당순</option>
+        <option value="area">선거구순</option>
+      </select>
+      <span class="tally"><b id="count">{{ data|length }}</b> / {{ data|length }}명</span>
+    </div>
+
+    <div class="parties" role="group" aria-label="정당 필터">
+      {% for p, n in counts|dictsort(by='value', reverse=true) %}
+      <button class="chip" type="button" data-party="{{ p }}" aria-pressed="false" style="--party:{{ pcolor.get(p) }}">
+        <i></i>{{ p }} <b>{{ n }}</b>
+      </button>
+      {% endfor %}
+    </div>
+  </header>
+
+  <main class="roster">
+    <div class="head" aria-hidden="true">
+      <span>이름</span><span>정당</span><span>선거구</span><span class="c-rank">선수</span><span>의정 이력</span>
+    </div>
+
+    <div id="rows">
+    {% for d in data %}
+      {% set party = (d.get('poly_nm') or '')|trim or '무소속' %}
+      {% set color = pcolor.get(party, '#877D6C') %}
+      {% set hg = d.get('hg_nm') or '' %}
+      {% set hj = d.get('hj_nm') or '' %}
+      {% set orig = d.get('orig_nm') or '' %}
+      {% set ele = pick(d, ELE) %}
+      {% set reele = pick(d, REELE) %}
+      {% set mine = units_of.get(loop.index0, []) %}
+
+      <div class="row" style="--party:{{ color }};--i:{{ loop.index0 }}"
+           data-party="{{ party }}"
+           data-terms="{{ mine|length }}"
+           data-name="{{ hg }}"
+           data-area="{{ orig }}"
+           data-search="{{ (hg ~ ' ' ~ hj ~ ' ' ~ party ~ ' ' ~ orig ~ ' ' ~ reele)|lower }}">
+
+        <div class="c-name">
+          <strong>{{ hg or '이름 미기입' }}</strong>
+          {% if hj %}<span>{{ hj }}</span>{% endif %}
+        </div>
+
+        <div class="c-party"><i></i><em>{{ party }}</em></div>
+
+        <div class="c-orig" title="{{ ele }}">{{ orig or '미기입' }}</div>
+
+        <div class="c-rank">{{ reele or '—' }}</div>
+
+        <div class="ticks" title="{{ d.get('units') }}" aria-label="역임: {{ d.get('units') }}">
+          {% for u in range(1, agg.max + 1) %}
+            <i class="{% if u in mine %}on{% endif %} {% if u == 1 %}first{% endif %}"></i>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p class="empty">
+        <strong>조회된 의원이 없습니다</strong>
+        assembly_member 테이블에 행이 들어오면 이 자리에 명부가 만들어집니다.
+      </p>
+    {% endfor %}
+    </div>
+
+    <p class="empty" id="noresult" hidden>
+      <strong>조건에 맞는 의원이 없습니다</strong>
+      검색어를 줄이거나 선택한 정당을 한 번 더 눌러 해제하세요.
+    </p>
+  </main>
+
+  <footer>SELECT * FROM assembly_member LIMIT 0, 100 · {{ data|length }}행 · 제헌~제{{ agg.max }}대</footer>
+</div>
+
+<script>
+(function () {
+  const box = document.getElementById('rows');
+  if (!box) return;
+
+  const rows = Array.from(box.querySelectorAll('.row'));
+  if (!rows.length) return;
+
+  const input = document.getElementById('q');
+  const sort = document.getElementById('sort');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const noresult = document.getElementById('noresult');
+  const count = document.getElementById('count');
+  const collator = new Intl.Collator('ko');
+  let party = null;
+
+  function filter() {
+    const term = input.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(r => {
+      const visible = (!term || r.dataset.search.includes(term)) &&
+                      (!party || r.dataset.party === party);
+      r.hidden = !visible;
+      if (visible) shown++;
+    });
+    count.textContent = shown;
+    noresult.hidden = shown > 0;
+  }
+
+  function reorder() {
+    const mode = sort.value;
+    const sorted = rows.slice().sort((a, b) => {
+      if (mode === 'terms') {
+        const diff = Number(b.dataset.terms) - Number(a.dataset.terms);
+        if (diff) return diff;
+      }
+      if (mode === 'party') {
+        const diff = collator.compare(a.dataset.party, b.dataset.party);
+        if (diff) return diff;
+      }
+      if (mode === 'area') {
+        const diff = collator.compare(a.dataset.area, b.dataset.area);
+        if (diff) return diff;
+      }
+      return collator.compare(a.dataset.name, b.dataset.name);
+    });
+    const frag = document.createDocumentFragment();
+    sorted.forEach(r => frag.appendChild(r));
+    box.appendChild(frag);
+  }
+
+  input.addEventListener('input', filter);
+  sort.addEventListener('change', reorder);
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      party = party === chip.dataset.party ? null : chip.dataset.party;
+      chips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.party === party)));
+      filter();
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

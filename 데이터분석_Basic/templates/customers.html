@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ session['user_id'] }} 고객 관리 대시보드</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<style>
+:root{
+  --ink:#0E2018;
+  --ink-soft:#1B3327;
+  --paper:#F3F6EA;
+  --paper-deep:#E7EDD8;
+  --line:#D3DCBF;
+  --text:#16281F;
+  --muted:#77856F;
+  --vip:#6B4E9E;
+  --gold:#C07C05;
+  --silver:#7F8D94;
+  --focus:#F2C230;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:'Pretendard',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:clamp(16px,4vw,56px);
+}
+
+.wrap{max-width:1080px;margin:0 auto}
+
+/* ── 헤더 ────────────────────────────── */
+.masthead{color:var(--paper);padding-bottom:22px}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:#9FBFA8;
+}
+
+.masthead h1{
+  font-family:'Black Han Sans',sans-serif;
+  font-weight:400;
+  font-size:clamp(2.6rem,9vw,5.2rem);
+  line-height:.94;
+  letter-spacing:-.02em;
+  margin:.18em 0 .34em;
+}
+
+.masthead h1 em{font-style:normal;color:#F2C230}
+
+.lede{
+  max-width:34ch;color:#B9CDBE;font-size:.95rem;line-height:1.6;
+}
+
+/* 시그니처: 명부에 오른 고객 한 명 = 스펙트럼 한 칸 */
+.spectrum{
+  display:flex;gap:3px;height:12px;margin:26px 0 10px;
+}
+.spectrum span{
+  flex:1;border-radius:2px;background:var(--fruit,#6E7F63);
+  transform-origin:bottom;
+  animation:grow .5s cubic-bezier(.2,.8,.3,1) backwards;
+  animation-delay:calc(var(--i) * 45ms);
+}
+@keyframes grow{from{transform:scaleY(.15);opacity:0}to{transform:scaleY(1);opacity:1}}
+
+.spectrum-note{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem;letter-spacing:.14em;color:#7E9686;text-transform:uppercase;
+}
+
+/* ── 요약 수치 ───────────────────────── */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:#2A4436;border:1px solid #2A4436;border-radius:10px;
+  overflow:hidden;margin:30px 0 0;
+}
+.stat{background:var(--ink-soft);padding:16px 18px}
+.stat dt{
+  font-family:'IBM Plex Mono',monospace;font-size:.66rem;
+  letter-spacing:.16em;text-transform:uppercase;color:#8FAE99;margin-bottom:8px;
+}
+.stat dd{
+  font-family:'IBM Plex Mono',monospace;font-weight:600;
+  font-size:clamp(1.1rem,3vw,1.5rem);color:var(--paper);
+  font-variant-numeric:tabular-nums;
+}
+.stat dd small{font-size:.62em;font-weight:400;color:#8FAE99;margin-left:3px}
+
+/* ── 패널 ────────────────────────────── */
+.panel{
+  background:var(--paper);border-radius:14px;margin-top:14px;
+  overflow:hidden;
+}
+
+.toolbar{
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  padding:18px 22px;border-bottom:1px solid var(--line);
+}
+
+.search{
+  flex:1 1 220px;display:flex;align-items:center;gap:9px;
+  background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:9px 13px;
+}
+.search:focus-within{border-color:var(--ink);box-shadow:0 0 0 3px rgba(14,32,24,.1)}
+.search svg{flex:none;stroke:var(--muted)}
+.search input{
+  border:0;outline:0;width:100%;font:inherit;font-size:.92rem;color:var(--text);background:none;
+}
+.search input::placeholder{color:var(--muted)}
+
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:8px 13px;border-radius:999px;
+  border:1px solid var(--line);background:#fff;color:var(--muted);
+  cursor:pointer;transition:.15s;
+}
+.chip:hover{border-color:var(--muted);color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.chip:focus-visible,.search input:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* ── 표 ──────────────────────────────── */
+table{width:100%;border-collapse:collapse}
+
+thead th{
+  font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  text-align:left;padding:12px 22px;border-bottom:1px solid var(--line);
+  background:var(--paper-deep);
+}
+thead th.num{text-align:right}
+
+tbody tr{
+  border-bottom:1px solid var(--line);
+  animation:rise .45s ease backwards;
+  animation-delay:calc(var(--i) * 35ms + 120ms);
+}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+tbody tr:last-child{border-bottom:0}
+tbody tr[hidden]{display:none}
+tbody tr:hover{background:#fff}
+tbody td{padding:14px 22px;font-size:.94rem;vertical-align:middle}
+
+.id{display:flex;align-items:center;gap:10px}
+.dot{
+  width:11px;height:11px;border-radius:50%;flex:none;
+  background:var(--fruit);box-shadow:0 0 0 3px color-mix(in srgb,var(--fruit) 18%,transparent);
+}
+.id code{
+  font-family:'IBM Plex Mono',monospace;font-size:.86rem;font-weight:600;color:var(--text);
+}
+.name{font-weight:600}
+.muted{color:var(--muted)}
+
+.grade{
+  display:inline-block;font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 9px;border-radius:5px;border:1px solid currentColor;
+}
+.grade.vip{color:#fff;background:var(--vip);border-color:var(--vip)}
+.grade.gold{color:var(--gold);background:rgba(192,124,5,.1)}
+.grade.silver{color:var(--silver);background:rgba(127,141,148,.12)}
+.grade.none{color:var(--muted);border-style:dashed;background:none}
+
+.point{text-align:right;min-width:130px}
+.point b{
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:.94rem;
+  font-variant-numeric:tabular-nums;display:block;
+}
+.point b small{font-weight:400;font-size:.76em;color:var(--muted);margin-left:2px}
+.bar{
+  height:4px;border-radius:2px;background:var(--paper-deep);
+  margin-top:6px;overflow:hidden;
+}
+.bar i{
+  display:block;height:100%;border-radius:2px;background:var(--fruit);
+  width:var(--pct);
+  animation:fill .7s cubic-bezier(.2,.8,.3,1) backwards;
+  animation-delay:calc(var(--i) * 35ms + 260ms);
+}
+@keyframes fill{from{width:0}}
+
+.empty{padding:56px 22px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--text);font-size:1.05rem;margin-bottom:6px}
+
+.foot{
+  padding:14px 22px;border-top:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+  letter-spacing:.08em;color:var(--muted);
+}
+
+/* ── 모바일: 표를 카드로 ─────────────── */
+@media (max-width:720px){
+  .stats{grid-template-columns:1fr 1fr}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  tbody tr{display:block;padding:16px 18px;border-bottom:1px solid var(--line)}
+  tbody tr[hidden]{display:none}
+  tbody td{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:5px 0;border:0}
+  tbody td::before{
+    content:attr(data-label);
+    font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);flex:none;
+  }
+  tbody td.cell-id::before{display:none}
+  tbody td.cell-id{padding-bottom:10px}
+  .point{text-align:right;min-width:0;flex:1}
+  .bar{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+{# ── 과일 이름 아이디 → 실제 과일 색. 없는 아이디는 기본색 ── #}
+{% set fruit = {
+  'grape':'#6B4E9E','orange':'#E8722A','peach':'#F0937A','pear':'#A8C24A',
+  'apple':'#D3372B','banana':'#E4B21F','kiwi':'#7FAE35','carrot':'#E06A1B',
+  'melon':'#5FB98C','plum':'#8E3A63','lemon':'#E8D33A','cherry':'#B3123A',
+  'mango':'#F2A33C','berry':'#7A3E6B'
+} %}
+{% set points = data | selectattr('적립금') | map(attribute='적립금') | list %}
+{% set max_point = points | max if points else 1 %}
+{% set ns = namespace(vip=0, blank=0) %}
+{% for d in data %}
+  {% if d['등급'] == 'vip' %}{% set ns.vip = ns.vip + 1 %}{% endif %}
+  {% if not d['나이'] or not d['등급'] or not d['직업'] %}{% set ns.blank = ns.blank + 1 %}{% endif %}
+{% endfor %}
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">BLEAX · 고객 테이블</p>
+    <h1>과일 이름을 쓰는<br><em>사람들</em>의 명부</h1>
+    <p class="lede">아이디는 전부 과일에서 따왔습니다. 그래서 이 명부에서는 사람마다 색이 하나씩 붙습니다 — 아래 띠의 칸 하나가 고객 한 명입니다.</p>
+
+    <div class="spectrum" aria-hidden="true">
+      {% for d in data %}
+        <span style="--fruit:{{ fruit.get(d['고객아이디']|lower, '#6E7F63') }};--i:{{ loop.index0 }}"></span>
+      {% endfor %}
+    </div>
+    <p class="spectrum-note">{{ data|length }}명 / 정렬 없음 / 조회 시점 기준</p>
+
+    <dl class="stats">
+      <div class="stat"><dt>전체 고객</dt><dd>{{ data|length }}<small>명</small></dd></div>
+      <div class="stat"><dt>VIP</dt><dd>{{ ns.vip }}<small>명</small></dd></div>
+      <div class="stat"><dt>적립금 합계</dt><dd>{{ "{:,}".format(points|sum) }}</dd></div>
+      <div class="stat"><dt>정보 미기입</dt><dd>{{ ns.blank }}<small>명</small></dd></div>
+    </dl>
+  </header>
+
+  <main class="panel">
+
+    <div class="toolbar">
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input id="q" type="search" placeholder="이름, 아이디, 직업으로 찾기" autocomplete="off">
+      </label>
+      <div class="filters" role="group" aria-label="등급 필터">
+        <button class="chip" data-grade="all" aria-pressed="true">전체</button>
+        <button class="chip" data-grade="vip" aria-pressed="false">VIP</button>
+        <button class="chip" data-grade="gold" aria-pressed="false">Gold</button>
+        <button class="chip" data-grade="silver" aria-pressed="false">Silver</button>
+        <button class="chip" data-grade="none" aria-pressed="false">미지정</button>
+      </div>
+    </div>
+
+    {% if data %}
+    <table id="roster">
+      <thead>
+        <tr>
+          <th scope="col">아이디</th>
+          <th scope="col">이름</th>
+          <th scope="col">나이</th>
+          <th scope="col">등급</th>
+          <th scope="col">직업</th>
+          <th scope="col" class="num">적립금</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in data %}
+        {% set fc = fruit.get(d['고객아이디']|lower, '#6E7F63') %}
+        <tr style="--fruit:{{ fc }};--i:{{ loop.index0 }}"
+            data-grade="{{ d['등급'] or 'none' }}"
+            data-search="{{ (d['고객아이디'] ~ ' ' ~ (d['이름'] or '') ~ ' ' ~ (d['직업'] or ''))|lower }}">
+
+          <td class="cell-id" data-label="아이디">
+            <span class="id"><span class="dot"></span><code>{{ d['고객아이디'] }}</code></span>
+          </td>
+
+          <td class="name" data-label="이름">{{ d['이름'] or '—' }}</td>
+
+          <td data-label="나이">
+            {% if d['나이'] %}{{ d['나이'] }}세{% else %}<span class="muted">미기입</span>{% endif %}
+          </td>
+
+          <td data-label="등급">
+            {% if d['등급'] %}
+              <span class="grade {{ d['등급'] }}">{{ d['등급'] }}</span>
+            {% else %}
+              <span class="grade none">미지정</span>
+            {% endif %}
+          </td>
+
+          <td data-label="직업">
+            {% if d['직업'] %}{{ d['직업'] }}{% else %}<span class="muted">미기입</span>{% endif %}
+          </td>
+
+          <td class="point" data-label="적립금">
+            <b>{{ "{:,}".format(d['적립금'] or 0) }}<small>P</small></b>
+            <span class="bar"><i style="--pct:{{ ((d['적립금'] or 0) / max_point * 100)|round(1) }}%"></i></span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p class="empty" id="noresult" hidden>
+      <strong>찾는 고객이 없습니다</strong>
+      검색어를 줄이거나 등급 필터를 전체로 바꿔 보세요.
+    </p>
+
+    <p class="foot"><span id="count">{{ data|length }}</span>명 표시 중 · 전체 {{ data|length }}명</p>
+
+    {% else %}
+    <p class="empty">
+      <strong>아직 등록된 고객이 없습니다</strong>
+      고객 테이블에 행을 추가하면 이 자리에 명부가 만들어집니다.
+    </p>
+    {% endif %}
+
+  </main>
+</div>
+
+<script>
+(function () {
+  const table = document.getElementById('roster');
+  if (!table) return;
+
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+  const input = document.getElementById('q');
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const noresult = document.getElementById('noresult');
+  const count = document.getElementById('count');
+  let grade = 'all';
+
+  function apply() {
+    const term = input.value.trim().toLowerCase();
+    let shown = 0;
+
+    rows.forEach(row => {
+      const okText = !term || row.dataset.search.includes(term);
+      const okGrade = grade === 'all' || row.dataset.grade === grade;
+      const visible = okText && okGrade;
+      row.hidden = !visible;
+      if (visible) shown++;
+    });
+
+    count.textContent = shown;
+    noresult.hidden = shown > 0;
+    table.hidden = shown === 0;
+  }
+
+  input.addEventListener('input', apply);
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+      grade = chip.dataset.grade;
+      apply();
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
