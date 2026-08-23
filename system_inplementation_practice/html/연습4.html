@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>의견을 남겨주세요</h1>
+    <form action="http://ggoreb.com/quiz/html/receive.jsp" method="post">
+      <p>이름: <input name="name" required/></p>
+      <p>연락처: <input name="contact" pattern="[0-9]{3}-[0-9]{4}-\d{4}" placeholder="010-1234-5678"
+        title="010-1234-5678 형식으로 입력해주세요." required/></p>
+      <p>
+        관심 서비스:
+        <select name="service">
+          <option>선택</option>
+          <option>배송</option>
+          <option>상품</option>
+          <option>기타</option>
+        </select>
+      </p>
+      <p>
+        상세 의견:<br />
+        <textarea name="message" maxlength="300" placeholder="300자 이내로 적어주세요." rows="5" cols="30"></textarea>
+      </p>
+      <p><button>전송</button></p>
+    </form>
+  </body>
+</html>
+
+
+<!-- 가장 중요한 것 name 옵션
+왜? -> 서버와 통신할 때 name 옵션을 통해서 하기 때문에 -->
