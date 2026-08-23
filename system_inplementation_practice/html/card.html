@@ -15,8 +15,9 @@
             padding: 20px;
             box-sizing: border-box;
             display: block;
-            justify-content: center;
-            align-items: center;
+            /* justify-content: center;
+            align-items: center; */
+            margin: 0 auto;
             width: 300px;
             height: 400px;
             background-color: white;
@@ -24,12 +25,13 @@
             border-radius: 15px;
         }
 
-        img {
+        #profile_img {
             margin: 0 auto 20px auto;
             width: 100px;
             height: 100px;
             background-size: cover;
             border-radius: 100%;
+            background-image: url('http://ggoreb.com/images/Portrait_Placeholder.png')
         }
 
         p {
@@ -43,6 +45,8 @@
             background-color: lightblue;
             border-radius: 10px;
             border: none;
+            font-size: 1rem;
+            cursor: pointer;
         }
 
         button:hover {
@@ -52,7 +56,7 @@
 </head>
 <body>
     <div id="card">
-    <img src="http://ggoreb.com/images/Portrait_Placeholder.png" />
+    <img id="profile_img"/>
     <h2>홍길동</h2>
     <p>안녕하세요 <br>
     CSS 박스모델 연습중입니다.</p>
