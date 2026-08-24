@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const url = 'https://example.com/page?id=123&name=kim';
+        let idx = url.indexOf('://') // 5
+        const protocol = url.substring(0, idx);
+
+        let idx2 = url.indexOf('/', idx+3) // 19
+        const domain = url.substring(idx+3, idx2);
+        const params = url.substring(idx2+1, url.length)
+        
+        console.log(`프로토콜: ${protocol}\n도메인: ${domain}\n파라미터: ${params}`);
+    </script>
+</body>
+</html>

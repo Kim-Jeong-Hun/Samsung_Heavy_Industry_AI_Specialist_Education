@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <input type="text" />
+        <button>Back</button>
+    </body>
+    <script>
+        const button = document.querySelector("button");
+        button.addEventListener("click", () => {
+            const input = document.querySelector("input");
+            let length = input.value.length;
+            let v = input.value.substring(0, length - 1);
+            input.value = v;
+        });
+    </script>
+</html>

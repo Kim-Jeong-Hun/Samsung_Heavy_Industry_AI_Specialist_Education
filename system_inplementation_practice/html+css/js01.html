@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // text의 색상을 빨간색으로 변경
+        // + 글자 크기를 2배로 키워주세요
+        function change() {
+            p = document.querySelector("p")
+            console.dir(p)
+            p.innerHTML = "change<img src='http://ggoreb.com/images/nami.jpg'>";
+            p.style.color = "red";
+            p.style.fontSize = "2rem";
+        }
+    </script>
+</head>
+<body>
+    <p id="demo">text</p>
+    <button type="button" onclick="change()">change</button>
+</body>
+</html>
