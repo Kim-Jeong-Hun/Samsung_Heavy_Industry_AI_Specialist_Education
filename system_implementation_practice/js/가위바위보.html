@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // 주사위 1 ~ 6
+            // 0 <= x < 1 => 최대값 곱하기 ex) 45
+            // 0 <=   < 45
+            // 0    ~   44.9999999999999999999999
+            // 0 <=    < 6
+            // 0    ~   5.9999999999999999999999
+            // 소수점 제거 0 ~ 5 => 1씩 더하기 => 1 ~ 6
+            // Math.random() : seed 값이 매번 달라서 Unix Time
+            const map = ["가위", "바위", "보"];
+            const player = 0;
+            const com = parseInt(Math.random() * 3);
+            console.log(`player: ${map[player]}, com: ${map[com]}`);
+            let result = "";
+            /* 코드 */
+            console.log(`결과: ${result}`);
+        </script>
+    </body>
+</html>

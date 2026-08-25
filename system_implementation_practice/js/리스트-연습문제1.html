@@ -16,6 +16,18 @@
 
             /* 코드 작성 */
             console.log(`${subjects[0][0]}: ${subjects[0][1]}\n${subjects[1][0]}: ${subjects[1][1]}\n${subjects[2][0]}: ${subjects[2][1]}`)
+
+            const data1 = `${subjects[0][0]} ${subjects[0][1]}<br />`;
+            const body = document.querySelector('body');
+            body.innerHTML += data1;
+
+            
+            const data2 = `${subjects[1][0]} ${subjects[1][1]}<br />`;
+            body.innerHTML += data2;
+
+
+            const data3 = `${subjects[2][0]} ${subjects[2][1]}`;
+            body.innerHTML += data3;
         </script>
     </body>
 </html>

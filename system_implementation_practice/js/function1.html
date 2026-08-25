@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            funcA();
+            funcB();
+            
+            // 선언식 - hoisting 가능
+            function funcA() {
+                console.log("java");
+            }
+
+            // 표현식 - hoisting 되지 않음. 
+            // (var이면 funcB 변수 자체라도 hoisting될건데, const라서 변수조차 hoisting 되지 않음.)
+            const funcB = function () {
+                console.log("script");
+            };
+        </script>
+    </body>
+</html>

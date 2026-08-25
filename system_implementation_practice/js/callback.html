@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da146a2a6ff6a54903c1d2a7caecd1c7"
+        ></script>
+
+        <div id="map" style="width: 500px; height: 400px"></div>
+            
+                
+        <script>
+            
+            function initMap(lat, lng) {
+                const container = document.getElementById('map');
+                const options = {
+                    center: new kakao.maps.LatLng(lat, lng),
+                    level: 5,
+                };
+                const map = new kakao.maps.Map(container, options);
+            }
+
+            function run(result) {
+                console.log(result);
+                lat = result.coords.latitude;
+                lng = result.coords.longitude;
+                console.log(`현재 위치는 ${lat}, ${lng}`);
+                initMap(lat, lng);
+            }
+            navigator.geolocation.getCurrentPosition(run);
+        </script>
+    </body>
+</html>

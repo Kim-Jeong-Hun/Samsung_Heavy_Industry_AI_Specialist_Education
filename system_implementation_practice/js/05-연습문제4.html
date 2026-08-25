@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            const house = {
+                bathroom: 1,
+                room: 2,
+                address: ["제주도", "제주시", "연동"],
+                persons: [{ name: "kim" }, { name: "lee" }],
+            };
+            delete house.bathroom;
+            console.log(house);
+
+            const animals = ['🐕‍🦺', '🐈'];
+            house.animals = animals;
+            console.log(house);
+        </script>
+    </body>
+</html>

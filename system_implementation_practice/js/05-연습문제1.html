@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class User {
+                constructor(firstName, lastName, age) {
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                    if(age<0) {
+                        age = 0;
+                    }
+                    this.age = age;
+                }
+            }
+
+            const user = new User("Steve", "Job", -1);
+            console.log(user.age);
+        </script>
+    </body>
+</html>

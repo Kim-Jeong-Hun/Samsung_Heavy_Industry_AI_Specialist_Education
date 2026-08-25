@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // 참조하고 있는 변수들은 (클로저 현상이더라도) 살아있는 변수이기 때문에
+            // 가비지 컬렉터에서 수집해 가지 않음.
+
+            // ***** 자바스크립트에서 제일 중요한 거 2개 ***** 
+            // 1. callback
+            // 2. closure 
+
+            let count = 0;
+            window.addEventListener('blur', () => {
+                count += 1;
+                console.log(count);
+            });
+
+            function run() {
+                let score = 50;
+                console.log(score);
+                return () => {
+                    score -= 1; 
+                    return score;
+                }
+            }
+        </script>
+    </body>
+</html>

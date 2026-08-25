@@ -6,9 +6,12 @@
       { name: '수빈', email: 'soobin@sample.com' }
     ];
 
+    const body = document.querySelector('body');
     /* 코드 작성 */ 
     for(let i=0; i<users.length; i++) {
-        console.log(`${users[i].name}님의 이메일은 ${users[i].email}입니다.`);
+        let string = `<p>${users[i].name}님의 이메일은 ${users[i].email}입니다.<p>`
+        console.log(string);
+        body.innerHTML += string;
     }
   </script>
 </body>

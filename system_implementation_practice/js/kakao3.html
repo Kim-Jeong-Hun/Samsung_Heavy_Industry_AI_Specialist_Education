@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script
+            type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da146a2a6ff6a54903c1d2a7caecd1c7&libraries=services,clusterer,drawing"
+        ></script>
+
+        <div id="mapArea" style="width: 1400px; height: 800px; display: flex">
+            <div
+                id="mapWrapper"
+                style="width: 100%; height: 100%; flex-shrink: 0"
+            >
+                <div id="map" style="width: 100%; height: 100%"></div>
+            </div>
+            <div
+                id="roadview"
+                style="flex: 1; height: 100%; display: none"
+            ></div>
+        </div>
+
+        <script>
+            // 클래스 활용
+            // -마커 출력, 특정 지명 표시
+            const mapCenter = new kakao.maps.LatLng(33.450701, 126.570667);
+            const mapWrapper = document.getElementById("mapWrapper");
+
+            const container = document.getElementById("map");
+            const options = {
+                center: mapCenter,
+                level: 3,
+            };
+            const map = new kakao.maps.Map(container, options);
+
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                position: mapCenter,
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+
+            // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+            var mapTypeControl = new kakao.maps.MapTypeControl();
+            map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+            // 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 생성합니다
+            var zoomControl = new kakao.maps.ZoomControl();
+            map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+            var iwContent =
+                '<div style="padding:5px;">Hello World! <br><a href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">큰지도보기</a> <a href="https://map.kakao.com/link/to/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">길찾기</a></div>';
+
+            // 인포윈도우를 생성합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                position: mapCenter,
+                content: iwContent,
+            });
+
+            // 마커 위에 인포윈도우를 표시합니다
+            infowindow.open(map, marker);
+
+            map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW); //지도 위에 로드뷰 도로 올리기
+
+            var rvContainer = document.getElementById("roadview"); //로드뷰를 표시할 div
+            var rv = new kakao.maps.Roadview(rvContainer); //로드뷰 객체
+            var rvClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+            // 마커 이미지를 생성합니다.
+            var markImage = new kakao.maps.MarkerImage(
+                "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png",
+                new kakao.maps.Size(26, 46),
+                {
+                    spriteSize: new kakao.maps.Size(1666, 168),
+                    spriteOrigin: new kakao.maps.Point(705, 114),
+                    offset: new kakao.maps.Point(13, 46),
+                },
+            );
+
+            // 드래그가 가능한 마커를 생성합니다.
+            var rvMarker = new kakao.maps.Marker({
+                image: markImage,
+                position: mapCenter,
+                draggable: true,
+                map: map,
+            });
+
+            //마커에 dragend 이벤트를 할당합니다
+            kakao.maps.event.addListener(rvMarker, "dragend", function () {
+                var position = rvMarker.getPosition(); //현재 마커가 놓인 자리의 좌표
+                toggleRoadview(position); //로드뷰를 토글합니다
+            });
+
+            //지도에 클릭 이벤트를 할당합니다
+            kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+                var position = mouseEvent.latLng;
+
+                rvMarker.setPosition(position);
+                toggleRoadview(position); //로드뷰를 토글합니다
+            });
+
+            //로드뷰 시점이 바뀌면 지도와 마커도 따라가게 합니다
+            kakao.maps.event.addListener(rv, "position_changed", function () {
+                var rvPosition = rv.getPosition();
+                map.setCenter(rvPosition);
+                rvMarker.setPosition(rvPosition);
+            });
+
+            //로드뷰 toggle함수
+            function toggleRoadview(position) {
+                //전달받은 좌표(position)에 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄웁니다
+                rvClient.getNearestPanoId(position, 50, function (panoId) {
+                    if (panoId === null) {
+                        rvContainer.style.display = "none"; //로드뷰를 넣은 컨테이너를 숨깁니다
+                        mapWrapper.style.width = "100%";
+                        map.relayout();
+                    } else {
+                        mapWrapper.style.width = "50%";
+                        map.relayout(); //지도를 감싸고 있는 영역이 변경됨에 따라, 지도를 재배열합니다
+                        rvContainer.style.display = "block"; //로드뷰를 넣은 컨테이너를 보이게합니다
+                        rv.setPanoId(panoId, position); //panoId를 통한 로드뷰 실행
+                        rv.relayout(); //로드뷰를 감싸고 있는 영역이 변경됨에 따라, 로드뷰를 재배열합니다
+                    }
+                });
+            }
+
+            //처음 진입 시 중심 좌표로 로드뷰를 띄웁니다
+            toggleRoadview(mapCenter);
+        </script>
+    </body>
+</html>

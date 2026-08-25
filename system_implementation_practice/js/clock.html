@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            div {
+                background-color: yellow;
+                font-size: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            // 디지털 시계
+            // 10:30:40 -> 41
+            // 1초마다 화면에 출력, 기능
+            function run() {
+                const date = new Date();
+                const hour = date.getHours();
+                const min = date.getMinutes();
+                const sec = date.getSeconds();
+                const div = document.querySelector('div');
+                div.innerHTML = `${hour}:${min}:${sec}`
+
+            }
+            setInterval(run, 1000);
+        </script>
+        <div>
+        </div>
+    </body>
+</html>
