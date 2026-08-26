@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // 비동기 작업을 위해서 Promise 사용
+            // 콜백 지옥을 벗어나기 위해서
+            console.log(1);
+            const p = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // console.log('p');
+                     resolve('완료');
+                }, 3000);
+            });
+            p.then(() => {
+                console.log('Promise 완료');
+            })
+            console.log(2);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function 콜백2(파라미터) {
+            document.body.innerHTML += `<h2>경도 : ${파라미터.coords.longitude}</h2><h2>위도 : ${파라미터.coords.latitude}</h2>`;
+        }
+        navigator.geolocation.getCurrentPosition(콜백2);
+
+
+        function 콜백() {
+            document.body.innerHTML += `<h1>완료</h1>`;
+        }
+
+        setTimeout(콜백, 3000);
+
+        function 함수1(파라미터) {
+            파라미터('ABC') // <= 함수2 실행
+        }
+
+        function 함수2(파라미터) {
+            console.log(파라미터)
+        }
+
+        함수1(함수2);
+        // 함수 1의 파라미터로 함수2를 넘겨줌. <- 콜백 함수의 개념
+    </script>
+</body>
+</html>

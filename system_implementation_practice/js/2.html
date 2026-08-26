@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const ajax = fetch(url, { method: "get" })
+            .then((res) => res.json())
+            .then((data) => {
+                공룡종류수 = data.length; // 6
+                let code = "";
+                for (let i = 0; i < 공룡종류수; i++) {
+                    kind = data[i].kind;
+                    공룡수 = data[i].dinosaurs.length;
+                    code += `
+            <div class="dropdown">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+              ${kind} (${공룡수})
+              </button>
+              <ul class="dropdown-menu">
+                ${data[i].dinosaurs
+                    .map((v) => {
+                        return `<li><a class="dropdown-item" href="#">${v.title}</a></li>`;
+                    })
+                    .join("")}
+              </ul>
+            </div>`;
+                }
+
+                const content = document.querySelector("#content");
+                content.innerHTML = code;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            class Student {
+                constructor(name, age, enrolled, score) {
+                    this.name = name;
+                    this.age = age;
+                    this.enrolled = enrolled;
+                    this.score = score;
+                }
+            }
+            const students = [
+                new Student("A", 29, true, 45),
+                new Student("B", 28, false, 80),
+                new Student("C", 30, true, 90),
+                new Student("D", 40, false, 66),
+                new Student("E", 18, true, 90),
+            ];
+
+            // filter : 조건에 맞는 것만 남기기
+            const studentOverScore49 = students.filter((v) => {
+                return v.score >= 50
+            // map : 함수를 적용시킨 것으로 새로운 배열 리턴
+            // forEach는 새로운 배열 리턴 X
+            }).map((v) => {
+                return v.name;
+            }).join(', '); // 메소드 체이닝(Method Chaining)
+
+            console.log(studentOverScore49);
+        </script>
+    </body>
+</html>

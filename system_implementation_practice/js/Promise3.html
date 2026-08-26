@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="result"></div>
+    <script>
+        // // 비동기 동작
+        url = 'http://ggoreb.com/api/toc.jsp';
+        // const res = fetch(url);
+        // // res 객체가 리턴되지 않아서 undefined로 리턴되었고,
+        // // res.text()함수가 오류를 내뱉음.
+        // // -> res 객체가 리턴될 때까지 기다리자.
+        // const data = res.text();
+        // console.log(data);
+
+        fetch(url)
+            .then((res) => { return res.text() })
+            .then((data) => console.log(data));
+
+        const result = document.querySelector("#result");
+        function eat(callback) {
+            return new Promise((res) => {
+                setTimeout(() => {
+                    console.log("밥을 먹어요");
+                    result.innerHTML += `<p>밥을 먹어요</p>`;
+                    res(8);
+                }, 1000);
+            })
+        }
+        // 1출력 -> eat()실행 -> 2출력 
+        // -> 밥을 먹어요 출력(eat()실행 결과) -> eat()이 끝나고 3출력
+        console.log(1);
+        eat().then(() => {console.log(3)}); //비동기
+        console.log(2);
+    </script>
+</body>
+</html>

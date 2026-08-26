@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        animals = ['🐶','😺','🐷'];
+        animals.push('🐵');
+        animals[100] = '🐰';
+        // ?
+        animals['문자인덱스'] = '이상한값';
+        console.log(animals[50]);
+        console.log(animals.length);
+        console.log(animals['문자인덱스']);
+        console.log(animals);
+
+        // 끝 값 제거
+        animals.pop();
+
+        // 첫 값 제거
+        animals.shift();
+
+        // 첫 값 추가
+        animals.unshift('🐮');
+        console.log(animals);
+    </script>
+</body>
+</html>

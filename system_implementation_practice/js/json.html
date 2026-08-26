@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            // 객체 -> 문자 : Serialize (직렬화)
+            // 문자 -> 객체 : Deserialize (역직렬화)
+            // (Marshalling, Unmarshalling)이라고도 함.
+            const json = {
+                'key' : 'value',
+                'a' : [1, 2, 3, 4]
+            }
+
+            // ify <- OO으로 바꾼다, OO화
+            // stringify : json을 string으로 바꾼다.
+            // 왜? 백엔드-프론트엔드 또는 서로 다른 통신 주체끼리 알아볼 수 있는 공통된 형식으로 만들기 위해서.
+
+            const text = JSON.stringify(json)
+            console.log(json);
+            console.log(text);
+        </script>
+    </body>
+</html>

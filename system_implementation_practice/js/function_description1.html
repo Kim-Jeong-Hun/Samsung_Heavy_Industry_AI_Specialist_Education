@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 함수 내에서 return으로 또 다른 함수를 지정
+        function 함수() {
+            let 지역변수 = 0
+            return function() {
+                지역변수 += 10
+                return 지역변수
+            }
+        }
+
+        // 함수는 스택 구조로 실행됨, 실행 후 스택에서 제거
+        값 = 함수();
+        값()
+        값()
+        값()
+        // 함수가 계속 쌓이면 스택 오버플로우가 되어 Memory Exceed 발생
+        // 함수가 return되지 않고 있으면 지역변수가 계속 존재함
+        // 이 지역변수가 계속 존재하는 현상을 closure라고 함.
+        // closure를 통해 외부에서 접근이 불가한 데이터를 활용할 수 있음.
+
+    </script>
+</body>
+</html>

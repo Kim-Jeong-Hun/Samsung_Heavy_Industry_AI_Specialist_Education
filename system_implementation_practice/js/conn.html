@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        async function run () {
+            url = 'http://ggoreb.com/api/toc.jsp';
+            const res = await fetch(url);
+            const data = await res.text();
+            console.log(data);
+            
+            // deserialized됨.
+            const obj = JSON.parse(data);
+            // console.log(obj);
+
+            obj.forEach((v) => {
+                console.log(v.title);
+            })
+
+        }
+
+        run();
+    </script>
+</body>
+</html>
