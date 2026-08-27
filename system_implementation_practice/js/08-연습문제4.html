@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        검색어 입력 : <input type="text" name="search" />
+        <script>
+            const input = document.querySelector("[name=search]");
+            input.addEventListener("focus", (e) => {
+                let search = e.target.value;
+                if (search.value == null) {
+                    input.value = "#";
+                }
+                
+            });
+
+            input.addEventListener("input", (e) => {
+                let value = e.data;
+                if (value == ', ') input.value += ' #'
+                console.dir(e);
+            });
+
+        </script>
+    </body>
+</html>

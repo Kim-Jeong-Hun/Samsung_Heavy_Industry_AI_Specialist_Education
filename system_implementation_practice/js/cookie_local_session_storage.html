@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 로컬스토리지 : 웹페이지 이탈해도 데이터 보존
+        localStorage.setItem("name", "Jeonghun");
+        // 세션스토리지 : 브라우저 종료 또는 웹페이지 이탈 시 모든 데이터 삭제
+        sessionStorage.setItem("name", "Jeonghun");
+        const date = new Date();
+        date.setMinutes(date.getMinutes() + 1);
+        const str = date.toUTCString();
+        // 쿠키 : 사용자 브라우저에 저장됨.
+        document.cookie = 'name=value;expires=' + str;
+    </script>
+</body>
+</html>

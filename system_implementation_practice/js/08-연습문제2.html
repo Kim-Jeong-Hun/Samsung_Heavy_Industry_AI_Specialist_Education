@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="d-grid">
+                <button type="button" id="s1" class="btn btn-primary btn-block">
+                    이미지 불러오기
+                </button>
+                <button type="button" id="s2" class="btn btn-primary btn-block">
+                    이미지 삭제하기
+                </button>
+            </div>
+            <!-- 이미지 담고 삭제할 곳 -->
+            <div class="target"></div>
+        </div>
+        <script>
+            // 1. img 객체 제거 (remove)
+            document
+                .querySelector("#s2")
+                .addEventListener("click", () => {
+                    const imgContainer = document.querySelector('.target');
+                    if(imgContainer.hasChildNodes() == true) {
+                        imgContainer.removeChild(imgContainer.lastChild);
+                    }
+                });
+            // 2. img 객체 생성 (createElement)
+            const targetTag = document.querySelector('.target');
+            let num = 1;
+            document
+                .querySelector("#s1")
+                .addEventListener("click", () => {
+                    const imgTag = document.createElement("img");
+                    imgTag.src = `http://ggoreb.com/images/choco/${num}.jpg`;
+                    num = (num % 6)+1;
+                    targetTag.appendChild(imgTag);
+                });
+        </script>
+    </body>
+</html>

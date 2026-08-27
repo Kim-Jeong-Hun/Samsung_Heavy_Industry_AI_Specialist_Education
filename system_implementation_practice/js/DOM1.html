@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="content" seq="123">내용</p>
+    <script>
+        const p = document.querySelector('p');
+        const seq = p.getAttribute('seq');
+        console.log(seq);
+
+        const obj = document.createElement('h1');
+        obj.textContent = 'Header';
+        document.body.appendChild(obj);
+
+        // CSS는 obj 내의 style 객체 접근 필요
+        obj.style.backgroundColor = "Red";
+        // const text = document.createTextNode("Header");
+        console.dir(obj);
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            h1 {
+                /* 3초 동안, 색상을 부드럽게(ease-in-out), 무한히(infinite) 변경 */
+                animation: changeColor 3s ease-in-out infinite;
+            }
+
+            @keyframes changeColor {
+                0% {
+                    color: #ff0000;
+                } /* 빨강 */
+                33% {
+                    color: #00ff00;
+                } /* 초록 */
+                66% {
+                    color: #0000ff;
+                } /* 파랑 */
+                100% {
+                    color: #ff0000;
+                } /* 다시 빨강으로 돌아옴 */
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello, HTTP Server!</h1>
+    </body>
+    <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const h1Element = document.querySelector('h1');
+    
+    // 필수 스타일 초기화 (화면 어디든 움직일 수 있도록 설정)
+    h1Element.style.position = 'absolute';
+    h1Element.style.margin = '0';
+    h1Element.style.whiteSpace = 'nowrap'; // 줄바꿈 방지
+
+    // 시작 위치 (좌표)
+    let x = Math.floor(Math.random() * (window.innerWidth - 200));
+    let y = Math.floor(Math.random() * (window.innerHeight - 50));
+
+    // 이동 속도 및 방향 (숫자가 커질수록 빨라집니다)
+    let dx = 3; 
+    let dy = 3;
+
+    // 무작위 RGB 색상 생성 함수
+    function changeColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      h1Element.style.color = `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // 처음 시작할 때 색상 한 번 부여
+    changeColor();
+
+    // 매 프레임마다 위치를 계산하고 벽에 충돌했는지 감지하는 함수
+    function update() {
+      // 1. 현재 글자의 실시간 너비와 높이 가져오기
+      const h1Width = h1Element.offsetWidth;
+      const h1Height = h1Element.offsetHeight;
+
+      // 2. 다음 프레임의 위치 계산
+      x += dx;
+      y += dy;
+
+      // 3. 좌우 벽 충돌 검사
+      if (x <= 0 || x + h1Width >= window.innerWidth) {
+        dx = -dx; // 방향 반전
+        changeColor(); // 벽에 부딪히면 색상 변경
+      }
+
+      // 4. 상하 벽 충돌 검사
+      if (y <= 0 || y + h1Height >= window.innerHeight) {
+        dy = -dy; // 방향 반전
+        changeColor(); // 벽에 부딪히면 색상 변경
+      }
+
+      // 5. 실제 CSS 위치 업데이트
+      h1Element.style.left = `${x}px`;
+      h1Element.style.top = `${y}px`;
+
+      // 브라우저의 다음 최적화된 프레임에 맞춰 update 함수 반복 실행 (부드러운 애니메이션)
+      requestAnimationFrame(update);
+    }
+
+    // 애니메이션 시작
+    requestAnimationFrame(update);
+  });
+</script>
+</html>
