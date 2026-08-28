@@ -7,16 +7,13 @@
     </head>
     <body>
         <div>
-            <form>
-                <input type="text" name="hg_nm" placeholder="이름">
-                <br />
-                <input type="text" name="poly_nm" placeholder="소속">
-                <br />
-                <input type="text" name="orig_nm" placeholder="지역구">
-                <br />
-                <button>검색</button>
-            </form>
-        </div>
+  <form action="/">
+    <input type="text" name="hg_nm"   value="<%= hg_nm %>"   placeholder="이름">
+    <input type="text" name="poly_nm" value="<%= poly_nm %>" placeholder="소속">
+    <input type="text" name="orig_nm" value="<%= orig_nm %>" placeholder="지역구">
+    <button>검색</button>
+  </form>
+</div>
         <table border="1">
             <tr>
                 <td>대수</td>
@@ -35,8 +32,13 @@
                 </tr>
             <% } %>
         </table>
-        <% for(let i=startPage; i<=endPage; i++) { %>
-            <a href="/?page=<%= i %>"><%= i %></a>
-        <% } %>
+        <%
+  const qs = `hg_nm=${encodeURIComponent(hg_nm)}`
+           + `&poly_nm=${encodeURIComponent(poly_nm)}`
+           + `&orig_nm=${encodeURIComponent(orig_nm)}`;
+%>
+<% for(let i = startPage; i <= endPage; i++) { %>
+  <a href="/?page=<%= i %>&<%- qs %>"><%= i %></a>
+<% } %>
     </body>
 </html>
