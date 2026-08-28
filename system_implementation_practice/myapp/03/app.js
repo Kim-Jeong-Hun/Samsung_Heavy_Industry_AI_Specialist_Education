@@ -1,8 +1,10 @@
 import express from "express";
 import { logger } from './middleware/logger.js';
+import { loggerIp } from './middleware/logger-ip.js';
 import userRouter from "./routes/user.js";
 
 const app = express();
+app.use(loggerIp);
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

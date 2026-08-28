@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJS 예제</title>
+</head>
+<body>
+    <h1>환영합니다, <%= name %>님!</h1>
+    <h3><%= list %></h3>
+    <% list.forEach((v) => { %>
+        <h3><%= v %></h3>
+    <% }) %>
+</body>
+</html>
