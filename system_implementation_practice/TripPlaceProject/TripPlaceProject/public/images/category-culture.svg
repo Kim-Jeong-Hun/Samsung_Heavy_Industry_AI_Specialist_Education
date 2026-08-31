@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyCulture" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B98BD6"/>
+      <stop offset="100%" stop-color="#F0DDF7"/>
+    </linearGradient>
+    <radialGradient id="lantern1" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#FFD86B"/>
+      <stop offset="100%" stop-color="#F0932B"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#skyCulture)"/>
+  <path d="M0 40 Q100 10 200 35 Q300 60 400 25" stroke="#8C5AB8" stroke-width="3" fill="none"/>
+  <ellipse cx="90" cy="110" rx="34" ry="42" fill="url(#lantern1)"/>
+  <rect x="86" y="66" width="8" height="14" fill="#8C5AB8"/>
+  <rect x="86" y="150" width="8" height="14" fill="#8C5AB8"/>
+  <ellipse cx="210" cy="150" rx="40" ry="48" fill="url(#lantern1)"/>
+  <rect x="206" y="100" width="8" height="16" fill="#8C5AB8"/>
+  <rect x="206" y="196" width="8" height="16" fill="#8C5AB8"/>
+  <ellipse cx="320" cy="95" rx="28" ry="34" fill="url(#lantern1)"/>
+  <rect x="316" y="59" width="8" height="12" fill="#8C5AB8"/>
+  <rect x="316" y="127" width="8" height="12" fill="#8C5AB8"/>
+  <rect x="0" y="230" width="400" height="30" fill="#6E3F94"/>
+</svg>

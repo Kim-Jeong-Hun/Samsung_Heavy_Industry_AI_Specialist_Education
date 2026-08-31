@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyNature" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8FD3C8"/>
+      <stop offset="100%" stop-color="#E8F8F0"/>
+    </linearGradient>
+    <linearGradient id="mtBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5FB89C"/>
+      <stop offset="100%" stop-color="#3E9678"/>
+    </linearGradient>
+    <linearGradient id="mtFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2E7D5C"/>
+      <stop offset="100%" stop-color="#1F5E45"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#skyNature)"/>
+  <circle cx="330" cy="55" r="30" fill="#FFE08A"/>
+  <path d="M0 170 L70 90 L130 150 L190 70 L260 160 L330 100 L400 175 L400 260 L0 260 Z" fill="url(#mtBack)"/>
+  <path d="M0 220 L90 130 L160 190 L230 110 L310 195 L400 140 L400 260 L0 260 Z" fill="url(#mtFront)"/>
+  <circle cx="60" cy="205" r="16" fill="#3E9678"/>
+  <rect x="57" y="205" width="6" height="22" fill="#5C3A21"/>
+  <circle cx="90" cy="215" r="20" fill="#2E7D5C"/>
+  <rect x="86" y="215" width="7" height="26" fill="#4A2F1B"/>
+</svg>

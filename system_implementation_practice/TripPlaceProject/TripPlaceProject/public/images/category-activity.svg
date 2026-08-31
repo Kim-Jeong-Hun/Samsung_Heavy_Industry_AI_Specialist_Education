@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyActivity" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF9A6B"/>
+      <stop offset="100%" stop-color="#FFE0B2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#skyActivity)"/>
+  <circle cx="200" cy="130" r="85" fill="none" stroke="#D9455F" stroke-width="10"/>
+  <circle cx="200" cy="130" r="10" fill="#D9455F"/>
+  <line x1="200" y1="130" x2="200" y2="45" stroke="#D9455F" stroke-width="4"/>
+  <line x1="200" y1="130" x2="200" y2="215" stroke="#D9455F" stroke-width="4"/>
+  <line x1="200" y1="130" x2="273" y2="87" stroke="#D9455F" stroke-width="4"/>
+  <line x1="200" y1="130" x2="127" y2="173" stroke="#D9455F" stroke-width="4"/>
+  <line x1="200" y1="130" x2="273" y2="173" stroke="#D9455F" stroke-width="4"/>
+  <line x1="200" y1="130" x2="127" y2="87" stroke="#D9455F" stroke-width="4"/>
+  <circle cx="200" cy="45" r="12" fill="#FFD86B"/>
+  <circle cx="273" cy="87" r="12" fill="#6BCB77"/>
+  <circle cx="273" cy="173" r="12" fill="#4D96FF"/>
+  <circle cx="200" cy="215" r="12" fill="#FFD86B"/>
+  <circle cx="127" cy="173" r="12" fill="#6BCB77"/>
+  <circle cx="127" cy="87" r="12" fill="#4D96FF"/>
+  <rect x="0" y="235" width="400" height="25" fill="#B5442D"/>
+</svg>

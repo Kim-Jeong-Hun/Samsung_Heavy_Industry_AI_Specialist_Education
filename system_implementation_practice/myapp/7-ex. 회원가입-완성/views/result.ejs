@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>회원 시스템</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <% if (success) { %>
+      <h2>등록 완료!</h2>
+      <p><strong><%= id %></strong>번 회원이 추가되었습니다.</p>
+    <% } else { %>
+      <h2>등록 실패</h2>
+      <p>잠시 후 다시 시도해주세요.</p>
+    <% } %>
+    <a href="/member/form">← 돌아가기</a>
+  </div>
+</body>
+
+</html>

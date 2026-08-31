@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>로그인</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h2>로그인</h2>
+    <form method="POST" action="/member/signin">
+      <label>이름</label>
+      <input type="text" name="name" required />
+      <label>이메일</label>
+      <input type="email" name="email" required />
+      <button type="submit">로그인</button>
+    </form>
+    <p style="margin-top: 10px;">
+      아직 회원이 아니라면? 👉 <a href="/member/form">회원가입</a>
+    </p>
+  </div>
+</body>
+
+</html>

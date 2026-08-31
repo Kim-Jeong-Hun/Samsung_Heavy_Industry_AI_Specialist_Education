@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>TripPlace - 국내 여행지 추천</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>🧭 TripPlace</h1>
+    <p>국내 여행지를 지역별, 테마별로 찾아보세요</p>
+  </header>
+
+  <form class="search-form" method="GET" action="/">
+    <input type="text" name="keyword" placeholder="여행지 이름 검색" value="<%= keyword %>">
+
+    <select name="region">
+      <option value="">전체 지역</option>
+      <% ['서울','경기','인천','강원','충북','충남','대전','전북','전남','경북','경남','부산','제주'].forEach(function(r) { %>
+        <option value="<%= r %>" <%= region === r ? 'selected' : '' %>><%= r %></option>
+      <% }) %>
+    </select>
+
+    <select name="category">
+      <option value="">전체 카테고리</option>
+      <% ['자연','역사','문화','액티비티'].forEach(function(c) { %>
+        <option value="<%= c %>" <%= category === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+
+    <button type="submit">검색</button>
+  </form>
+
+  <main class="card-grid">
+    <%
+      const iconMap = {
+        '자연': '/images/category-nature.svg',
+        '역사': '/images/category-history.svg',
+        '문화': '/images/category-culture.svg',
+        '액티비티': '/images/category-activity.svg',
+      };
+    %>
+    <% if (list && list.length > 0) { %>
+      <% list.forEach(function(place) { %>
+        <a class="card" href="/place/<%= place.id %>">
+          <img class="card-img" src="<%= iconMap[place.category] || '/images/category-culture.svg' %>" alt="<%= place.category %>">
+          <div class="card-body">
+            <span class="badge"><%= place.region %> · <%= place.category %></span>
+            <h3><%= place.name %></h3>
+            <p><%= place.description %></p>
+            <button type="button" class="favorite-btn" data-id="<%= place.id %>"
+              onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(<%= place.id %>)">♡ 즐겨찾기 추가</button>
+          </div>
+        </a>
+      <% }) %>
+    <% } else { %>
+      <p class="empty">검색 결과가 없습니다.</p>
+    <% } %>
+  </main>
+
+  <nav class="pagination">
+    <% for (let p = startPage; p <= endPage; p++) { %>
+      <a class="page-link <%= p === page ? 'active' : '' %>"
+         href="/?keyword=<%= keyword %>&region=<%= region %>&category=<%= category %>&page=<%= p %>">
+        <%= p %>
+      </a>
+    <% } %>
+  </nav>
+
+  <script src="/js/favorite.js"></script>
+</body>
+</html>

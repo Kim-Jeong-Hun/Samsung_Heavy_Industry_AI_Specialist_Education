@@ -4,6 +4,9 @@ import path from "path";
 import { getListAll, getCount } from "./db1.js";
 
 const app = express();
+app.use(express.urlencoded());
+app.use(express.json());
+
 const __dirname = import.meta.dirname;
 
 app.set("view engine", "ejs");

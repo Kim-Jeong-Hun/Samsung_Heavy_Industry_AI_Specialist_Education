@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>회원 시스템</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h2>회원 등록</h2>
+    <form method="POST" action="/member/form">
+      <label>이름</label>
+      <input type="text" name="name" required />
+      <label>이메일</label>
+      <input type="email" name="email" required />
+      <p></p>
+      <button type="button">중복 확인</button>
+      <button type="submit">등록</button>
+    </form>
+  </div>
+</body>
+<script>
+  const check_button = document.querySelector("[type=button]");
+  check_button.addEventListener('click', async () => {
+    // 버튼을 클릭하면 링크의 데이터 가져오기
+    // 1) 입력된 이메일을 /check 로 전달
+    // <input type="email" id="email" name="email" required />의 값 email로 할당
+    const email = document.querySelector('[name=email]').value;
+    const url = `/member/check?email=${email}`;
+    // url에 데이터(res) 요청
+    const res = await fetch(url);
+    // 받아온 데이터(res)를 json으로 바꿔서 data라는 이름으로 받음
+    const data = await res.json();
+    console.log(data);
+    
+  });
+</script>
+</html>

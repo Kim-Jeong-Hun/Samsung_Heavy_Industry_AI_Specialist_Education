@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>주문 결과</title>
+</head>
+<body>
+<h1><%= username %> 님의 주문 결과</h1>
+<!-- 코드 작성 4) 도시락 종류(lunchbox) 출력하기 -->
+<!-- lunchbox 값이 있으면 "도시락 종류: 값" / 없으면 "도시락을 선택하지 않았습니다." -->
+<% if (lunchbox) { %>
+ <p>도시락 종류: <strong><%= lunchbox %></strong></p>
+<% } else { %>
+ <p>도시락을 선택하지 않았습니다.</p>
+<% } %>
+<!-- 코드 작성 5) 추가 반찬(sides) 목록 출력하기 -->
+<!-- sides 배열 길이가 0보다 크면 forEach로 <li> 반복 출력 -->
+<!-- 없으면 "추가 반찬을 선택하지 않았습니다." -->
+<% if (sides.length > 0) { %>
+ <p>추가 반찬:</p>
+ <ul>
+ <% sides.forEach(side => { %>
+ <li><%= side %></li>
+ <% }) %>
+ </ul>
+<% } else { %>
+ <p>추가 반찬을 선택하지 않았습니다.</p>
+<% } %>
+</body>
+</html>
