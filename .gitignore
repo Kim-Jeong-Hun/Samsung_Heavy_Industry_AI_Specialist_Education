@@ -1,1 +1,15 @@
 node_modules/
+
+# Python virtual environments
+.venv/
+venv/
+rag/
+__pycache__/
+*.pyc
+
+# Local vector DB data
+vector_store/
+
+# Secrets
+*키.txt
+*.env
